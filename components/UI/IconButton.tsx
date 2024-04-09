@@ -1,11 +1,11 @@
-import { Pressable, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Pressable, StyleSheet } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 
 interface IconButtonProps {
-    icon: keyof typeof Ionicons.glyphMap;
-    size: number;
-    color: string;
-    onPress: () => void;
+  icon: keyof typeof Ionicons.glyphMap;
+  size: number;
+  color: string;
+  onPress: () => void;
 }
 
 function IconButton({ icon, size, color, onPress }: IconButtonProps) {
@@ -24,8 +24,10 @@ export default IconButton;
 const styles = StyleSheet.create({
   button: {
     padding: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#19A873",
+    borderRadius: 7,
   },
   pressed: {
     opacity: 0.7,
