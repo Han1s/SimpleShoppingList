@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Checkbox from "expo-checkbox";
 import { Ionicons } from "@expo/vector-icons";
@@ -6,18 +5,19 @@ import { COLORS } from "../lib/constants";
 
 interface CheckItemProps {
   children: React.ReactNode;
+  checked: boolean;
+  index: number,
+  checkToggleHandler: () => void;
 }
 
-const CheckItem = ({ children }: CheckItemProps) => {
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
-
+const CheckItem = ({ children, checked, checkToggleHandler }: CheckItemProps) => {
   return (
     <View style={styles.outerContainer}>
       <View style={styles.innerContainer}>
         <Checkbox
-          value={toggleCheckBox}
+          value={checked}
           color={COLORS.primary}
-          onValueChange={(newValue) => setToggleCheckBox(newValue)}
+          onValueChange={checkToggleHandler}
         />
         <Text style={styles.listItem}>{children}</Text>
       </View>

@@ -6,8 +6,13 @@ import storage from "./lib/storage";
 import CheckItem from "./components/CheckItem";
 import { COLORS } from "./lib/constants";
 
+interface ListItem {
+  text: string;
+  checked: boolean;
+}
+
 export default function App() {
-  const [list, setList] = useState<Array<string>>([]);
+  const [list, setList] = useState<Array<ListItem>>([]);
   const [input, setInput] = useState("");
 
   useEffect(() => {
@@ -15,18 +20,28 @@ export default function App() {
   }, []);
 
   const loadInitialList = () => {
-    const shoppingList = storage.load({ key: "shoppingList" }).then((res) => {
+    storage.load({ key: "shoppingList" }).then((res) => {
+      console.log(res);
       setList(res);
     });
+    storage.remove({ key: "shoppingList" });
   };
 
   const addItemToList = () => {
     if (!input) return;
 
-    const newList = [input, ...list];
+    const newItem = {
+      text: input,
+      checked: false,
+    };
+    const newList = [newItem, ...list];
     setList(newList);
     storage.save({ key: "shoppingList", data: newList });
     setInput("");
+  };
+
+  const checkToggleHandler = () => {
+    console.log("checked");
   };
 
   // Text color: https://dribbble.com/shots/19618347-Fitness-Mobile-App 19A873
@@ -51,7 +66,15 @@ export default function App() {
       <View style={styles.listContainer}>
         <FlatList
           data={list}
-          renderItem={({ item }) => <CheckItem>{item}</CheckItem>}
+          renderItem={({ item, index }) => (
+            <CheckItem
+              index={index}
+              checked={item.checked}
+              checkToggleHandler={checkToggleHandler}
+            >
+              {item.text}
+            </CheckItem>
+          )}
         />
       </View>
     </View>
@@ -76,7 +99,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 24,
     gap: 8,
   },
   listContainer: {
